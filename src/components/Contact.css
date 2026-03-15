@@ -1,0 +1,43 @@
+/* Contact Component Specific Styles */
+
+.contact-section {
+  background-color: var(--color-dark-violet);
+  color: white;
+  padding: 60px 0;
+}
+
+.contact-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: var(--font-size-base);
+  color: white;
+}
+
+.contact-item svg {
+  color: var(--color-secondary);
+}
+
+/* Tablet and up */
+@media (min-width: 768px) {
+  .contact-section {
+    padding: 80px 0;
+  }
+
+  .contact-info {
+    flex-direction: row;
+    gap: 1rem;
+  }
+
+  .contact-item {
+    font-size: var(--font-size-lg);
+  }
+}

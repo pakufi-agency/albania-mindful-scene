@@ -1,0 +1,105 @@
+/* Header Component Specific Styles */
+
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  background-color: transparent;
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  color: var(--color-dark-blue);
+  transition: all 0.3s ease;
+}
+
+.header.scrolled {
+  background-color: var(--color-dark-blue);
+  color: white;
+}
+
+.header-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.logo-image {
+  height: 2.5rem;
+  width: auto;
+  display: block;
+}
+
+.logo-icon {
+  width: 2rem;
+  height: 2rem;
+  background: var(--color-primary);
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  font-size: 0.875rem;
+}
+
+.logo-text {
+  color: inherit;
+  transition: color 0.3s ease;
+}
+
+.nav-menu {
+  display: none;
+}
+
+.nav-link {
+  color: inherit;
+  transition: color 0.3s ease;
+  text-decoration: none;
+}
+
+.nav-link:hover {
+  color: var(--color-surface);
+}
+
+.scrolled .nav-link:hover {
+  color: var(--color-secondary);
+}
+
+.mobile-menu-button {
+  display: block;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: inherit;
+  transition: all 0.3s ease;
+}
+
+.mobile-menu-button:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+/* Tablet and up */
+@media (min-width: 768px) {
+  .nav-menu {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+  }
+
+  .mobile-menu-button {
+    display: none;
+  }
+
+  .header-container {
+    padding: 1rem;
+  }
+}
