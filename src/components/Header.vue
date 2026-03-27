@@ -10,18 +10,18 @@
         <div class="logo-text">Albania Mindful Scene</div>
       </div>
       
-      <nav class="nav-menu">
+      <!-- <nav class="nav-menu">
         <a href="#events" class="nav-link">Events</a>
         <a href="#about" class="nav-link">About</a>
         <a href="#newsletter" class="nav-link">Newsletter</a>
         <a href="#contact" class="nav-link">Contact</a>
-      </nav>
+      </nav> -->
       
-      <button class="mobile-menu-button">
+      <!-- <button class="mobile-menu-button">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
         </svg>
-      </button>
+      </button> -->
     </div>
   </header>
 </template>

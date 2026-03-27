@@ -16,16 +16,16 @@
       </h1>
       
       <p class="text-body mb-6 max-w-2xl mx-auto opacity-90 animate-fade-in-delay subtitle">
-        Discover a curated collection of meditation sessions, yoga retreats, and mindfulness workshops across Albania's most stunning locations
+        Discover a curated collection of meditation sessions, yoga retreats, medicine music and mindfulness workshops across Albania built by Albanian community.
       </p>
       
       <div class="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in-delay-2">
-        <button class="btn-primary">
+        <a href="#events" class="btn-primary">
           Explore Events
-        </button>
-        <button class="btn-primary-inverted">
+        </a>
+        <!-- <button class="btn-primary-inverted">
           Learn More
-        </button>
+        </button> -->
       </div>
     </div>
     

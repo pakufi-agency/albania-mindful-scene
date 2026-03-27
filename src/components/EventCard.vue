@@ -7,20 +7,31 @@
         :alt="event.title"
         class="w-full h-full object-cover"
       >
-      <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+      <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
       <div class="event-image-overlay">
         <h2 class="event-title">{{ event.title }}</h2>
       </div>
     </div>
     
     <!-- Event Content -->
-    <div class="p-4">
-      <h3 class="event-time">{{ event.date }} {{ event.time }}</h3>
-      <div class="flex items-center gap-2 text-sm text-gray-600">
-        <span>Here the description{{ event.description }}</span>
+    <div class="p-4 flex flex-col h-full">
+      <h3 class="event-time">{{ event.date }}</h3>
+      <div class="flex flex-col gap-2 text-sm text-gray-600 flex-grow">
+        <p v-if="event.description.value" class="text-gray-600 event-description" :title="event.description.value">
+          {{ event.description.value.substring(0, 160) }}
+          <span v-if="event.description.value.length > 160">...</span>
+        </p>
+        <a 
+          :href="event.post_url" 
+          target="_blank"
+          rel="noopener noreferrer"
+          class="discover-more-btn"
+        >
+          Discover More
+        </a>
       </div>
 
-      <div class="event-meta">
+      <div class="event-meta mt-auto">
         <div class="flex items-center gap-2 text-gray-600">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
@@ -33,14 +44,14 @@
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
           </svg>
-          <span>Organized by: <a :href="event.organiserLink" target="_blank">{{ event.organiser }}</a></span>
+          <span>Organized by: <a :href="event.organizer_link" target="_blank">{{ event.organizer }}</a></span>
         </div>
 
         <div class="flex items-center gap-2 text-gray-600">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
           </svg>
-          <span>Original post: <a :href="event.post_url" target="_blank">{{ event.post_url }}</a></span>
+          <span>Original post: <a :href="event.post_url" target="_blank">View Post</a></span>
         </div>
       </div>
       
