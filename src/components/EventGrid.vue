@@ -154,7 +154,6 @@ export default {
         // Show initial batch of events
         this.visibleEvents = events.slice(0, this.eventsPerPage)
         
-        console.log('Successfully loaded events from Airtable:', events.length, 'events')
       } catch (error) {
         console.error('Error loading events:', error)
         this.error = error.message || 'There was an error. Please try to reload again.'

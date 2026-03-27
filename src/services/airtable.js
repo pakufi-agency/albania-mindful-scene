@@ -2,11 +2,6 @@ const AIRTABLE_TOKEN = import.meta.env.VITE_AIRTABLE_TOKEN;
 const AIRTABLE_BASE_ID = import.meta.env.VITE_AIRTABLE_BASE_ID;
 const AIRTABLE_TABLE_ID = import.meta.env.VITE_AIRTABLE_TABLE_ID;
 
-// console.log("Airtable Configuration:");
-// console.log("Token exists:", !!AIRTABLE_TOKEN);
-// console.log("Base ID:", AIRTABLE_BASE_ID);
-// console.log("Table ID:", AIRTABLE_TABLE_ID);
-
 // Field mapping from Airtable field names to frontend field names
 const fieldMapping = {
   "Event Name": "title",
@@ -105,8 +100,6 @@ export const fetchEventsFromAirtable = async () => {
   }
 
   try {
-    console.log("Fetching data from Airtable...");
-
     const response = await fetch(
       `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${AIRTABLE_TABLE_ID}`,
       {
@@ -116,8 +109,6 @@ export const fetchEventsFromAirtable = async () => {
         },
       },
     );
-
-    console.log("Airtable response status:", response.status);
 
     if (!response.ok) {
       const errorText = await response.text();
@@ -133,8 +124,6 @@ export const fetchEventsFromAirtable = async () => {
     }
 
     const data = await response.json();
-    console.log("Raw Airtable data:", data);
-
     const events = data.records
       .map((record) => {
         const mappedFields = mapFieldNames(record.fields);
@@ -153,8 +142,6 @@ export const fetchEventsFromAirtable = async () => {
       .filter((event) => event.status !== "❌")
       .filter((event) => isEventUpcoming(event.raw_event_date));
 
-    console.log("Processed events with mapped field names:", events);
-    console.log("Events filtered by date:", events.length, "upcoming events");
     return events;
   } catch (error) {
     console.error("Error fetching from Airtable:", error);

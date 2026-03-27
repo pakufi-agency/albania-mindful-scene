@@ -22,14 +22,20 @@
               <button 
                 type="submit"
                 class="btn-primary"
+                :disabled="loading"
               >
-                Join Us
+                <span v-if="loading">Subscribing...</span>
+                <span v-else>Join Us</span>
               </button>
             </div>
           </form>
           
           <div v-if="submitted" class="success-message">
             <p>Thank you for joining our community!</p>
+          </div>
+          
+          <div v-if="error" class="error-message">
+            <p>{{ error }}</p>
           </div>
         </div>
       </div>
@@ -45,18 +51,57 @@ export default {
       form: {
         email: ''
       },
-      submitted: false
+      submitted: false,
+      loading: false,
+      error: null
     }
   },
   methods: {
-    handleSubmit() {
-      console.log('Newsletter subscription:', this.form.email)
-      this.submitted = true
+    async handleSubmit() {
+      this.loading = true
+      this.error = null
       
-      setTimeout(() => {
+      try {
+        const apiKey = import.meta.env.VITE_BEEHIIV_API_KEY
+        const publicationId = import.meta.env.VITE_BEEHIIV_PUBLICATION_ID
+        
+        if (!apiKey || !publicationId) {
+          throw new Error('Beehiiv configuration is missing')
+        }
+        
+        const response = await fetch(`/api/v2/publications/${publicationId}/subscriptions`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${apiKey}`
+          },
+          body: JSON.stringify({
+            email: this.form.email
+          })
+        })
+        
+        if (!response.ok) {
+          const errorData = await response.json()
+          throw new Error(errorData.message || 'Failed to subscribe')
+        }
+        
+        this.submitted = true
         this.form = { email: '' }
-        this.submitted = false
-      }, 3000)
+        
+        setTimeout(() => {
+          this.submitted = false
+        }, 5000)
+        
+      } catch (error) {
+        if (error.message === 'Failed to fetch') {
+          this.error = 'Unable to connect to Beehiiv API.'
+        } else {
+          this.error = error.message || 'Failed to subscribe to newsletter'
+        }
+        console.error('Newsletter subscription error:', error)
+      } finally {
+        this.loading = false
+      }
     }
   }
 }
