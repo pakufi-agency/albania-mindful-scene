@@ -64,12 +64,13 @@ export default {
       try {
         const apiKey = import.meta.env.VITE_BEEHIIV_API_KEY
         const publicationId = import.meta.env.VITE_BEEHIIV_PUBLICATION_ID
+        const apiDomain = import.meta.env.VITE_BEEHIIV_API_DOMAIN || 'https://api.beehiiv.com'
         
         if (!apiKey || !publicationId) {
           throw new Error('Beehiiv configuration is missing')
         }
         
-        const response = await fetch(`/api/v2/publications/${publicationId}/subscriptions`, {
+        const response = await fetch(`${apiDomain}/v2/publications/${publicationId}/subscriptions`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -81,8 +82,22 @@ export default {
         })
         
         if (!response.ok) {
-          const errorData = await response.json()
-          throw new Error(errorData.message || 'Failed to subscribe')
+          let errorMessage = 'Failed to subscribe to newsletter'
+          try {
+            const errorData = await response.json()
+            errorMessage = errorData.message || errorMessage
+          } catch (jsonError) {
+            // Handle cases where response is not valid JSON
+            errorMessage = `Subscription failed (${response.status}): Please try again later`
+          }
+          throw new Error(errorMessage)
+        }
+        
+        // Try to parse successful response, but don't fail if it's not JSON
+        try {
+          await response.json()
+        } catch (jsonError) {
+          // Ignore JSON parsing errors for successful responses
         }
         
         this.submitted = true
@@ -94,9 +109,13 @@ export default {
         
       } catch (error) {
         if (error.message === 'Failed to fetch') {
-          this.error = 'Unable to connect to Beehiiv API.'
+          this.error = 'Unable to connect to the newsletter service. Please check your internet connection and try again.'
+        } else if (error.message.includes('Subscription failed')) {
+          this.error = error.message
+        } else if (error.message.includes('Beehiiv configuration')) {
+          this.error = 'Newsletter service is temporarily unavailable. Please try again later.'
         } else {
-          this.error = error.message || 'Failed to subscribe to newsletter'
+          this.error = 'Something went wrong while subscribing. Please try again or contact support if the issue persists.'
         }
         console.error('Newsletter subscription error:', error)
       } finally {
