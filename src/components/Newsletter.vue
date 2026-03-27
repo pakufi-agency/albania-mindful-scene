@@ -62,19 +62,10 @@ export default {
       this.error = null
       
       try {
-        const apiKey = import.meta.env.VITE_BEEHIIV_API_KEY
-        const publicationId = import.meta.env.VITE_BEEHIIV_PUBLICATION_ID
-        const apiDomain = import.meta.env.VITE_BEEHIIV_API_DOMAIN || 'https://api.beehiiv.com'
-        
-        if (!apiKey || !publicationId) {
-          throw new Error('Beehiiv configuration is missing')
-        }
-        
-        const response = await fetch(`${apiDomain}/v2/publications/${publicationId}/subscriptions`, {
+        const response = await fetch('/api/subscribe', {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${apiKey}`
+            'Content-Type': 'application/json'
           },
           body: JSON.stringify({
             email: this.form.email
