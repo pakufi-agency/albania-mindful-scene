@@ -149,10 +149,11 @@ export default {
         this.error = null
         
         const events = await fetchEventsFromAirtable()
-        this.events = events
+        // Sort events by date (closest to furthest)
+        this.events = this.sortEventsByDate(events)
         
         // Show initial batch of events
-        this.visibleEvents = events.slice(0, this.eventsPerPage)
+        this.visibleEvents = this.events.slice(0, this.eventsPerPage)
         
       } catch (error) {
         console.error('Error loading events:', error)
@@ -162,6 +163,14 @@ export default {
       } finally {
         this.loading = false
       }
+    },
+    
+    sortEventsByDate(events) {
+      return events.sort((a, b) => {
+        const dateA = new Date(a.raw_event_date)
+        const dateB = new Date(b.raw_event_date)
+        return dateA - dateB
+      })
     },
     
     loadMore() {
