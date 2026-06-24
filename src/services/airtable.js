@@ -1,3 +1,5 @@
+import { getCachedData, setCachedData } from "./cache.js";
+
 const AIRTABLE_TOKEN = import.meta.env.VITE_AIRTABLE_TOKEN;
 const AIRTABLE_BASE_ID = import.meta.env.VITE_AIRTABLE_BASE_ID;
 const AIRTABLE_TABLE_ID = import.meta.env.VITE_AIRTABLE_TABLE_ID;
@@ -99,6 +101,14 @@ export const fetchEventsFromAirtable = async () => {
     throw new Error("Airtable credentials not configured");
   }
 
+  // Check cache first
+  const cacheKey = "airtable_events";
+  const cachedData = getCachedData(cacheKey);
+  if (cachedData) {
+    console.log("Returning cached events data");
+    return cachedData;
+  }
+
   try {
     const response = await fetch(
       `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${AIRTABLE_TABLE_ID}`,
@@ -141,6 +151,9 @@ export const fetchEventsFromAirtable = async () => {
       })
       .filter((event) => event.status !== "❌")
       .filter((event) => isEventUpcoming(event.raw_event_date));
+
+    // Cache the results
+    setCachedData(cacheKey, events);
 
     return events;
   } catch (error) {
